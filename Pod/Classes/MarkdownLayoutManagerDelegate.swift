@@ -1,0 +1,37 @@
+//
+//  MarkdownLayoutManagerDelegate.swift
+//  Pods
+//
+//  Created by Dave Weston on 3/27/15.
+//
+//
+
+import UIKit
+
+public class MarkdownLayoutManagerDelegate: NSObject, NSLayoutManagerDelegate {
+    
+    public func layoutManager(layoutManager: NSLayoutManager, paragraphSpacingBeforeGlyphAtIndex glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
+        
+        let charIndex = layoutManager.characterIndexForGlyphAtIndex(glyphIndex)
+        let val: AnyObject? = layoutManager.textStorage?.attribute(CodeBlockStartAttributeName, atIndex: charIndex, effectiveRange: nil)
+        if let isCodeBlockStart = val as! Bool? {
+            if isCodeBlockStart {
+                return 15.0
+            }
+        }
+        
+        return 0.0
+    }
+    
+    public func layoutManager(layoutManager: NSLayoutManager, lineSpacingAfterGlyphAtIndex glyphIndex: Int, withProposedLineFragmentRect rect: CGRect) -> CGFloat {
+        let charIndex = layoutManager.characterIndexForGlyphAtIndex(glyphIndex)
+        let val: AnyObject? = layoutManager.textStorage?.attribute(CodeBlockEndAttributeName, atIndex: charIndex, effectiveRange: nil)
+        if let isCodeBlockStart = val as! Bool? {
+            if isCodeBlockStart {
+                return 15.0
+            }
+        }
+        
+        return 0.0
+    }
+}
