@@ -33,18 +33,18 @@ class TextComponentContainer
 class GithubParser
 {
     lazy var commitRegex: NSRegularExpression = {
-        let regex = NSRegularExpression(pattern:"^(([-.\\w]+)(/([-.\\w]+))?@)?([a-fA-F0-9]{40})$", options: NSRegularExpressionOptions.allZeros, error: nil)
-        return regex!
+        let regex = try! NSRegularExpression(pattern:"^(([-.\\w]+)(/([-.\\w]+))?@)?([a-fA-F0-9]{40})$", options: NSRegularExpressionOptions())
+        return regex
     }()
     
     lazy var issueRegex: NSRegularExpression = {
-        let regex = NSRegularExpression(pattern: "^(([-.\\w]+)(/([-.\\w]+))?)?#(\\d+)$", options: NSRegularExpressionOptions.allZeros, error: nil)
-        return regex!
+        let regex = try! NSRegularExpression(pattern: "^(([-.\\w]+)(/([-.\\w]+))?)?#(\\d+)$", options: NSRegularExpressionOptions())
+        return regex
         }()
     
     lazy var userRefRegex: NSRegularExpression = {
-        let regex = NSRegularExpression(pattern:"^@([-\\w]+)$", options: NSRegularExpressionOptions.allZeros, error: nil)
-        return regex!
+        let regex = try! NSRegularExpression(pattern:"^@([-\\w]+)$", options: NSRegularExpressionOptions())
+        return regex
     }()
     
     func parseCommitRef(word: NSString) -> TextComponent?
@@ -53,7 +53,7 @@ class GithubParser
             return nil
         }
         
-        if let result = self.commitRegex.firstMatchInString(word as String, options: .allZeros, range: NSMakeRange(0, word.length)) {
+        if let result = self.commitRegex.firstMatchInString(word as String, options: NSMatchingOptions(), range: NSMakeRange(0, word.length)) {
             let shaRange = result.rangeAtIndex(5)
             let repoRange = result.rangeAtIndex(4)
             let ownerRange = result.rangeAtIndex(2)
@@ -80,13 +80,13 @@ class GithubParser
             return nil
         }
         
-        if let result = self.issueRegex.firstMatchInString(word as String, options: NSMatchingOptions.allZeros, range: NSMakeRange(0, word.length)) {
+        if let result = self.issueRegex.firstMatchInString(word as String, options: NSMatchingOptions(), range: NSMakeRange(0, word.length)) {
             
             let issueRange = result.rangeAtIndex(5)
             let repoRange = result.rangeAtIndex(4)
             let ownerRange = result.rangeAtIndex(2)
             
-            let issue = word.substringWithRange(issueRange).toInt()
+            let issue = Int(word.substringWithRange(issueRange))
             if issue == nil {
                 return nil
             }
@@ -110,9 +110,9 @@ class GithubParser
     
     func parseUserMention(word: String) -> TextComponent?
     {
-        if let result = self.userRefRegex.firstMatchInString(word, options: NSMatchingOptions.allZeros, range: NSMakeRange(0, count(word.utf16))) {
+        if let result = self.userRefRegex.firstMatchInString(word, options: NSMatchingOptions(), range: NSMakeRange(0, word.utf16.count)) {
             
-            let username = word.substringFromIndex(advance(word.startIndex, 1))
+            let username = word.substringFromIndex(word.startIndex.advancedBy(1))
             return UserMentionComponent(username: username)
         }
         

@@ -1,11 +1,15 @@
 PODS:
-  - cmark-bridge (0.2.1)
-  - Expecta (0.3.2)
-  - Expecta+Snapshots (1.3.2):
-    - Expecta (~> 0.3)
-    - FBSnapshotTestCase (= 1.6)
-  - FBSnapshotTestCase (1.6)
-  - Specta (0.5.0)
+  - cmark-bridge (1.0.1)
+  - Expecta (1.0.3)
+  - Expecta+Snapshots (2.0.0):
+    - Expecta (~> 1.0)
+    - FBSnapshotTestCase/Core (~> 2.0.3)
+  - FBSnapshotTestCase (2.0.4):
+    - FBSnapshotTestCase/SwiftSupport (= 2.0.4)
+  - FBSnapshotTestCase/Core (2.0.4)
+  - FBSnapshotTestCase/SwiftSupport (2.0.4):
+    - FBSnapshotTestCase/Core
+  - Specta (1.0.4)
   - Tribute (0.1.0):
     - cmark-bridge
 
@@ -21,11 +25,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  cmark-bridge: 7c8e45ca8be6707c9f7c007a767e0f8a9232b44d
-  Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
-  Expecta+Snapshots: 40c5ec43b43da3bae957f14fed5dc9177d08ec8b
-  FBSnapshotTestCase: 9d5fe43b29ae3a0ed8fc829477971b281038f748
-  Specta: eb90708ed77569bbda089f8ead10bb99b8e9489e
-  Tribute: 6b9fb27335cb85033267c5463fd03d750e0d0332
+  cmark-bridge: 5518ee84dc8c6a3a1ba58dd48c36f097f6e9a0e3
+  Expecta: 9d1bff6c8b0eeee73a166a2ee898892478927a15
+  Expecta+Snapshots: 29b38dd695bc72a0ed2bea833937d78df41943ba
+  FBSnapshotTestCase: d94cf34841c9e77390e29009e8e2713479d48753
+  Specta: 69bb134672aae190a1379ff91df07dad8dd1f869
+  Tribute: 1fa4c761f3e6aa0c6348860c48d509b86a84ed51
 
-COCOAPODS: 0.36.3
+COCOAPODS: 0.39.0

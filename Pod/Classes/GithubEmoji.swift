@@ -10,9 +10,9 @@ import Foundation
 
 public class GithubEmoji
 {
-    let name: String
-    let imageUrl: NSURL
-    var image: UIImage?
+    public let name: String
+    public let imageUrl: NSURL
+    public var image: PlatImage?
     
     public init(name: String, url: NSURL) {
         self.name = name

@@ -6,7 +6,12 @@
 //
 //
 
-import UIKit
+#if os(iOS)
+    import UIKit
+#elseif os(OSX)
+    import AppKit
+#endif
+
 import cmark_bridge
 
 class DummyRenderer : Renderer
@@ -20,15 +25,19 @@ class DummyRenderer : Renderer
     }
     
     func parser(parser: Parser, didEnterNode node: Node) {
-        NSLog("ENTER %@(%@)", node.type!, node.literal!)
+        print("ENTER \(node)")
     }
     
     func parser(parser: Parser, didLeaveNode node: Node) {
-        NSLog("LEAVE %@(%@)", node.type!, node.literal!)
+        print("LEAVE \(node)")
     }
 }
 
 public class Parser {
+    
+    public class func new() -> Parser {
+        return Parser()
+    }
     
     public init()
     {
@@ -39,18 +48,18 @@ public class Parser {
     {
         let document = cmark_parse_document(markdown.cStringUsingEncoding(NSUTF8StringEncoding)!, Int(markdown.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)), 0)
         
-        var iter = cmark_iter_new(document);
+        let iter = cmark_iter_new(document);
         
         renderer.parserDidStart();
         
         var ev_type = cmark_iter_next(iter);
-        while (ev_type.value != CMARK_EVENT_DONE.value) {
+        while (ev_type != CMARK_EVENT_DONE) {
             let cur = cmark_iter_get_node(iter);
             let node = Node(cmarkNode: cur);
-            if (ev_type.value == CMARK_EVENT_ENTER.value) {
+            if (ev_type == CMARK_EVENT_ENTER) {
                 renderer.parser(self, didEnterNode: node)
             }
-            else if (ev_type.value == CMARK_EVENT_EXIT.value) {
+            else if (ev_type == CMARK_EVENT_EXIT) {
                 renderer.parser(self, didLeaveNode: node)
             }
             

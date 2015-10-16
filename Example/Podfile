@@ -1,6 +1,16 @@
 source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
+target 'TributeExample-OSX', :exclusive => true do
+  platform :osx, '10.9'
+  pod "Tribute", :path => "../"
+end
+
+target 'TributeExample-OSXTests', :exclusive => true do
+    platform :osx, '10.9'
+  pod "Tribute", :path => "../"
+end
+
 target 'TributeExample', :exclusive => true do
   pod "Tribute", :path => "../"
 end

@@ -108,7 +108,7 @@ class ShaRefComponent: BaseTextComponent
         return subText
     }()
     
-    override var text: String { get { return String(format: "%@%@%@", subText, !subText.isEmpty ? "@" : "", self.sha.substringToIndex(advance(self.sha.startIndex, 6))) } }
+    override var text: String { get { return String(format: "%@%@%@", subText, !subText.isEmpty ? "@" : "", self.sha.substringToIndex(self.sha.startIndex.advancedBy(6))) } }
     override var url: NSURL? { get { return NSURL(string:String(format: "coderev://%@@%@", self.subText, self.sha)) } }
 }
 

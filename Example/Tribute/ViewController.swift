@@ -10,40 +10,56 @@ import UIKit
 import Tribute
 import cmark_bridge
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextViewDelegate {
     var textView: UITextView!
     var textStorage: NSTextStorage!
     var layoutDelegate: NSLayoutManagerDelegate!
     
     override func viewDidLoad() {
-        self.textStorage = NSTextStorage()
-        self.layoutDelegate = MarkdownLayoutManagerDelegate()
+        textStorage = NSTextStorage()
+        layoutDelegate = MarkdownLayoutManagerDelegate()
         let layoutManager = MarkdownLayoutManager()
-        layoutManager.delegate = self.layoutDelegate
+        layoutManager.delegate = layoutDelegate
         self.textStorage.addLayoutManager(layoutManager)
         
         let textContainer = NSTextContainer()
         textContainer.widthTracksTextView = true
         layoutManager.addTextContainer(textContainer)
         
-        self.textView = UITextView(frame: self.view.bounds, textContainer: textContainer)
-        self.textView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
-        self.textView.editable = false
-        self.view.addSubview(self.textView)
+        textView = UITextView(frame: view.bounds, textContainer: textContainer)
+        textView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        textView.editable = false
+        textView.delegate = self
+        view.addSubview(textView)
         
-        var parser = Parser()
-        let emojiLookup = ["ok": GithubEmoji(name: "ok", url: NSURL(string: "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png?v5")!)]
-        var githubPlainTextHandler = GithubPlainTextHandler(emojiLookup: emojiLookup)
-        var renderer = AttributedStringRenderer(plainTextHandler: githubPlainTextHandler)
-        if let url = NSBundle.mainBundle().URLForResource("AFNetworking-README", withExtension: "md") {
-            let data = NSData(contentsOfURL: url)
-            if let str = String(contentsOfURL: url, encoding: NSUTF8StringEncoding, error: nil) {
-                parser.parseMarkdown(str, renderer: renderer)
+        let parser = Parser()
+        if let url = NSURL(string: "https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png?v5") {
+            let emojiLookup = ["ok": GithubEmoji(name: "ok", url: url)]
+            
+            let githubPlainTextHandler = GithubPlainTextHandler(emojiLookup: emojiLookup)
+            let renderer = AttributedStringRenderer(plainTextHandler: githubPlainTextHandler)
+            if let url = NSBundle.mainBundle().URLForResource("AFNetworking-README", withExtension: "md") {
+                if let data = NSData(contentsOfURL: url) {
+                    if let str = String(data: data, encoding: NSUTF8StringEncoding) {
+                        parser.parseMarkdown(str, renderer: renderer)
+                    }
+                }
+            }
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1), dispatch_get_main_queue()) { () -> Void in
+                self.textView.attributedText = renderer.finalString
             }
         }
+    }
+    
+    func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+        NSLog("URL clicked: %@", URL)
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1), dispatch_get_main_queue()) { () -> Void in
-            self.textView.attributedText = renderer.finalString
-        }
+        return false
+    }
+    
+    func textView(textView: UITextView, shouldInteractWithTextAttachment textAttachment: NSTextAttachment, inRange characterRange: NSRange) -> Bool {
+        NSLog("text attachment clicked: %@", textAttachment)
+        return false
     }
 }

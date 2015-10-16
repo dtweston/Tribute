@@ -6,8 +6,6 @@
 //
 //
 
-import UIKit
-
 public protocol Renderer {
     func parserDidStart()
     func parserDidFinish()
