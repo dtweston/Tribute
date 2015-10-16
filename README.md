@@ -1,6 +1,6 @@
 # Tribute
 
-[![CI Status](http://img.shields.io/travis/Dave Weston/Tribute.svg?style=flat)](https://travis-ci.org/Dave Weston/Tribute)
+[![CI Status](http://img.shields.io/travis/dtweston/Tribute.svg?style=flat)](https://travis-ci.org/dtweston/Tribute)
 [![Version](https://img.shields.io/cocoapods/v/Tribute.svg?style=flat)](http://cocoadocs.org/docsets/Tribute)
 [![License](https://img.shields.io/cocoapods/l/Tribute.svg?style=flat)](http://cocoadocs.org/docsets/Tribute)
 [![Platform](https://img.shields.io/cocoapods/p/Tribute.svg?style=flat)](http://cocoadocs.org/docsets/Tribute)
